@@ -1,0 +1,27 @@
+version: '3'
+services:
+
+  # PHP-FPM
+  php-cli:
+    container_name: php-cli
+    build:
+      context: images/php-cli
+      args:
+        - USER_ID
+        - GROUP_ID
+    volumes:
+      - ./scripts:/app
+    environment:
+      XDEBUG_CONFIG: "client_host=192.168.221.1 client_port=9003 mode=debug start_with_request=yes"
+      PHP_IDE_CONFIG: "serverName=PHPCLI"
+    networks:
+      - internal
+    working_dir: /app
+
+networks:
+  internal:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.221.0/28
